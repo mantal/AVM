@@ -1,63 +1,64 @@
 //#include "IOperand.hpp"
 #include <string>
-#include <boost/lexical_cast.hpp>
+//#include <boost/lexical_cast.hpp>
 
 #include <iostream>
 
-enum eOperandType { int8 };
+enum eOperandType { Int8 };
 
 class IOperand
 {
-public:
+	public:
 
-	virtual int getPrecision(void) = 0;
+		virtual int getPrecision(void) = 0;
 
-	virtual std::string const& toString(void) const = 0;
+		virtual std::string const& toString(void) const = 0;
 
-	virtual ~IOperand(void) { }
+		virtual ~IOperand(void) { }
 };
 
 template <class T> class Operand : public IOperand
 {
-public:
+	public:
 
-	Operand(void) { value = 0; }
-	Operand(T v) : value(v) { }
-	Operand(Operand const& o) { value = o.value; }
-	Operand(IOperand& o)
-	{
+		Operand(T value, eOperandType type)
+			:_value(value), _type(type), _str(std::to_string(value)) { }
+		virtual ~Operand(void) {}
 
-	}
+		virtual int getPrecision(void)
+		{
+			return static_cast<int>(_type);
+		}
 
-	virtual int getPrecision(void)
-	{
-		return static_cast<int>(type);
-	}
+		virtual eOperandType getType(void) { return _type; }
 
-	virtual eOperandType getType(void) { return type; }
+		virtual IOperand const *operator+( IOperand const& rhs )
+		{
+			auto b = dynamic_cast<Operand const&>(rhs);
+			return new Operand(_value + b._value, _type);
+		}
 
-	virtual IOperand const *operator+( IOperand const& rhs )
-	{
-		auto b = dynamic_cast<Operand const&>(rhs);
-		return new Operand(value + b.value);
-	}
+		virtual IOperand const *operator-( IOperand const& rhs ) { return this; }
+		virtual IOperand const *operator*( IOperand const& rhs ) { return this; }
+		virtual IOperand const *operator/( IOperand const& rhs ) { return this; }
+		virtual IOperand const *operator%( IOperand const& rhs ) { return this; }
 
-	virtual IOperand const *operator-( IOperand const& rhs ) { return this; }
-	virtual IOperand const *operator*( IOperand const& rhs ) { return this; }
-	virtual IOperand const *operator/( IOperand const& rhs ) { return this; }
-	virtual IOperand const *operator%( IOperand const& rhs ) { return this; }
+		virtual std::string const& toString(void) const
+		{
+			return (this->_str);
 
-	virtual std::string const& toString(void) const
-	{
-		std::string const* s = new std::string("test");
-		std::string const sr = *s;
-		return sr;
-		//return boost::lexical_cast<std::string>(value);
-	}
+			//std::string const* s = new std::string("test");
+			//std::string const sr = *s;
+			//return boost::lexical_cast<std::string>(_value);
+		}
 
-	virtual ~Operand(void) {}
 
-private:
-	T value;
-	eOperandType type;
+	private:
+		T					_value;
+		eOperandType		_type;
+		const std::string	_str;
+
+		Operand(void);
+		//Operand(Operand const& o);
+		Operand(IOperand& o);
 };
