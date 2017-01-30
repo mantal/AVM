@@ -1,21 +1,7 @@
-//#include "IOperand.hpp"
+#include "IOperand.hpp"
 #include <string>
-//#include <boost/lexical_cast.hpp>
-
-#include <iostream>
-
-enum eOperandType { Int8 };
-
-class IOperand
-{
-	public:
-
-		virtual int getPrecision(void) = 0;
-
-		virtual std::string const& toString(void) const = 0;
-
-		virtual ~IOperand(void) { }
-};
+#include <algorithm>
+#include <functional>
 
 template <class T> class Operand : public IOperand
 {
@@ -23,42 +9,68 @@ template <class T> class Operand : public IOperand
 
 		Operand(T value, eOperandType type)
 			:_value(value), _type(type), _str(std::to_string(value)) { }
+		Operand(Operand const& o) : Operand(o._value, o._type) { }
+
 		virtual ~Operand(void) {}
 
-		virtual int getPrecision(void)
+		virtual int getPrecision(void) const
 		{
 			return static_cast<int>(_type);
 		}
 
-		virtual eOperandType getType(void) { return _type; }
+		virtual eOperandType getType(void) const { return _type; }
+		virtual T getValue(void) const { return _value; }
 
-		virtual IOperand const *operator+( IOperand const& rhs )
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
+#pragma clang diagnostic ignored "-Wdouble-promotion"
+		virtual IOperand const *operator+(IOperand const& rhs) const
 		{
-			auto b = dynamic_cast<Operand const&>(rhs);
-			return new Operand(_value + b._value, _type);
+			if (std::min(_type, rhs.getType()) != _type)
+				return rhs + *this;
+			return new Operand(_value + std::stod(rhs.toString()), _type);
 		}
 
-		virtual IOperand const *operator-( IOperand const& rhs ) { return this; }
-		virtual IOperand const *operator*( IOperand const& rhs ) { return this; }
-		virtual IOperand const *operator/( IOperand const& rhs ) { return this; }
-		virtual IOperand const *operator%( IOperand const& rhs ) { return this; }
+		virtual IOperand const *operator-(IOperand const& rhs) const
+		{
+			if (std::min(_type, rhs.getType()) != _type)
+				return rhs - *this;
+			return new Operand(_value - std::stod(rhs.toString()), _type);
+		}
+
+		virtual IOperand const *operator*(IOperand const& rhs) const
+		{
+			if (std::min(_type, rhs.getType()) != _type)
+				return rhs * *this;
+			return new Operand(_value * std::stod(rhs.toString()), _type);
+		}
+		virtual IOperand const *operator/(IOperand const& rhs) const
+		{
+			//if (std::min(_type, rhs.getType()) != _type)
+			//	return rhs / *this;
+			return new Operand(_value / std::stod(rhs.toString()), _type);
+		}
+		virtual IOperand const *operator%(IOperand const& rhs) const
+		{
+			if (_type >= eOperandType::Float || rhs.getType() >= eOperandType::Float)
+				throw new std::exception();//TODO FAIRE UN EXECPTION sPeCiALEe
+			if (std::min(_type, rhs.getType()) != _type)
+				return rhs % *this;
+			return new Operand(_value / std::stoll(rhs.toString()), _type);
+		}
+
+#pragma clang diagnostic pop
 
 		virtual std::string const& toString(void) const
 		{
-			return (this->_str);
-
-			//std::string const* s = new std::string("test");
-			//std::string const sr = *s;
-			//return boost::lexical_cast<std::string>(_value);
+			return (_str);
 		}
 
-
 	private:
-		T					_value;
-		eOperandType		_type;
+		const T				_value;
+		const eOperandType	_type;
 		const std::string	_str;
 
 		Operand(void);
-		//Operand(Operand const& o);
 		Operand(IOperand& o);
 };

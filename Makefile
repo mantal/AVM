@@ -11,9 +11,10 @@
 # **************************************************************************** #
 
 NAME	= abstractVM
-SRC		= main.cpp
+SRC		= main.cpp OperandFactory.cpp Operator.cpp VM.cpp
 OBJ		= $(SRC:.cpp=.o)
-CFLAGS  = -std=c++1z #-Wall -Wextra -Weverything
+CFLAGS  = -std=c++1z -Wall -Wextra
+
 debug: CFLAGS += -O0 -g3 -fsanitize=address
 release: CFLAGS += -O3 -march=native
 
