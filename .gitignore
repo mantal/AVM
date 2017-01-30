@@ -27,3 +27,7 @@
 *.exe
 *.out
 *.app
+
+boost/
+
+\.ycm_extra_conf\.py
