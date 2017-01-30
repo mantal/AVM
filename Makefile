@@ -11,7 +11,8 @@
 # **************************************************************************** #
 
 NAME	= abstractVM
-SRC		= main.cpp OperandFactory.cpp Operator.cpp VM.cpp
+SRC		= main.cpp OperandFactory.cpp Operator.cpp VM.cpp Expression.cpp \
+		  Push.cpp
 OBJ		= $(SRC:.cpp=.o)
 CFLAGS  = -std=c++1z -Wall -Wextra
 

@@ -8,9 +8,7 @@ class Operator
 {
 public:
 	
-	Operator(VM& vm, size_t param_n, size_t stack_param_n);
-
-	virtual void execute(std::vector<IOperand const&> const& values) const;
+	virtual void execute(VM &vm, std::vector<IOperand const*> const& operands) const;
 
 	virtual ~Operator() { }
 
@@ -18,9 +16,13 @@ public:
 
 	const size_t _param_n;
 	const size_t _stack_param_n;
+	const std::string name;
+
+protected:
+
+	Operator(size_t param_n, size_t stack_param_n, char const *name);
 
 private:
-	VM& _vm;
 
 	Operator(void);
 	Operator(Operator const&);
