@@ -4,21 +4,24 @@
 #include <deque>
 #include <vector>
 
+class Expression;
+
 class VM
 {
-	public:
+public:
 
-		VM(void);
+	VM(std::vector<Expression const*> const& expressions);
 
-		void eval(std::vector<std::string const&>);//TODO apramlexexx&shits
+	void run(void);
 
-		~VM(void);
+	~VM(void);
 
-		std::deque<IOperand const*> stack;
+	std::deque<IOperand const*> stack;
 
-	private:
+private:
+		
+	std::vector<Expression const*> _expressions;
 
-
-		VM(VM const&);
-		VM& operator=(VM const&);
+	VM(VM const&);
+	VM& operator=(VM const&);
 };

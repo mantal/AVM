@@ -12,13 +12,17 @@ int main(int argc, char **argv)
 
 
 	auto push = new Push();
-	auto expression = new Expression(*push, operands);
+	const std::vector<Expression const *> expressions = {
+			new Expression(*push, operands),
+			new Expression(*push, operands),
+	};
 
-	auto vm = new VM();
+	auto vm = new VM(expressions);
+	
+	vm->run();
 
-	expression->execute(*vm);
-
-	std::cout << vm->stack[0]->toString();
+	std::cout << vm->stack[0]->toString() << std::endl;
+	std::cout << vm->stack[1]->toString() << std::endl;
 
 	return 0;
 }
