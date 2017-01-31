@@ -9,12 +9,12 @@ class Expression//TODO sotcker ligne + char pour les msg d'erreur
 {
 public:
 
-	Expression(Operator const& op, std::vector<IOperand const*> operands);
+	Expression(Operator const& op, std::vector<IOperand const*> const *operands);
 
 	void execute(VM &vm) const;
 
 	Operator const& op;
-	std::vector<IOperand const*> const operands;
+	std::vector<IOperand const*> const *operands;
 
 private:
 
