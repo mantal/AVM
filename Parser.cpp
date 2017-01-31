@@ -3,8 +3,6 @@
 #include "Expression.hpp"
 #include "Exceptions.hpp"
 
-static void foo(int) {}
-
 Expression *Parser::parse(Operator const *op, std::vector<eOperandType> const& types, std::vector<std::string const *> const& values) const
 {
 	static const auto factory = new OperandFactory();
