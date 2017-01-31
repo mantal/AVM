@@ -29,11 +29,11 @@ Expression *Lexer::lex(std::string const& line) const
 	it++;
 
 	for (; it != strings.end(); it++)
-	{//TODO comments
+	{
 		if ((*it).size() == 0)
 			continue ;
-		if (boost::starts_with(*it, ";;"))//TODO exit
-			break ;
+		if (it->at(0) == ';')
+			continue ;
 		validate_operand_syntax(*it);
 		operands_types->push_back(get_operand_type(*it));
 		operands_values->push_back(get_operand_value(*it));
