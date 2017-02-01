@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <functional>
 #include <stdexcept>
+#include <limits>
 
 template <class T> class Operand : public IOperand
 {
@@ -25,17 +26,25 @@ template <class T> class Operand : public IOperand
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wconversion"
 #pragma clang diagnostic ignored "-Wdouble-promotion"
+
 		virtual IOperand const *operator+(IOperand const& rhs) const
 		{
 			if (std::max(_type, rhs.getType()) != _type)
 				return rhs + *this;
-			return new Operand(_value + std::stod(rhs.toString()), _type);
+			auto b = std::stod(rhs.toString());
+			if (_value + b >= std::numeric_limits<T>::max())
+				throw std::overflow_error("Overflow detected: " + toString() + " + " + rhs.toString());
+			return new Operand(_value + b, _type);
 		}
 
 		virtual IOperand const *operator-(IOperand const& rhs) const
 		{
 			if (std::max(_type, rhs.getType()) != _type)
 				return rhs - *this;
+			auto b = std::stod(rhs.toString());
+			if (_value - b <= std::numeric_limits<T>::min())
+				throw std::underflow_error("Underflow detected: " + toString() + " - " + rhs.toString());
+
 			return new Operand(_value - std::stod(rhs.toString()), _type);
 		}
 
@@ -43,19 +52,25 @@ template <class T> class Operand : public IOperand
 		{
 			if (std::max(_type, rhs.getType()) != _type)
 				return rhs * *this;
+			auto b = std::stod(rhs.toString());
+			if (_value * b >= std::numeric_limits<T>::max())
+				throw std::overflow_error("Overflow detected: " + toString() + " * " + rhs.toString());
+
 			return new Operand(_value * std::stod(rhs.toString()), _type);
 		}
+
 		virtual IOperand const *operator/(IOperand const& rhs) const
 		{
 			return new Operand(_value / std::stod(rhs.toString()), _type);
 		}
+
 		virtual IOperand const *operator%(IOperand const& rhs) const
 		{
 			if (_type >= eOperandType::Float || rhs.getType() >= eOperandType::Float)
 				throw std::domain_error("Modulus operator require integer operands");
 			if (std::max(_type, rhs.getType()) != _type)
 				return rhs % *this;
-			return new Operand(_value / std::stoll(rhs.toString()), _type);
+			return new Operand(_value / std::stoll(rhs.toString()), _type);//TODO TODO TODO
 		}
 
 #pragma clang diagnostic pop
