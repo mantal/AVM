@@ -16,5 +16,5 @@ public:
 
 private:
 
-	static std::string const value_regex_string;
+	static std::string const operand_regex;
 };

@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include <regex>
 
-std::string const Lexer::value_regex_string = "(-?\\d+)([\\.\\,]\\d+)?";
+std::string const Lexer::operand_regex = "\\w+\\((-?\\d+([\\.\\,]\\d+)?)\\)";
 
 Expression *Lexer::lex(std::string const& line) const
 {
@@ -80,16 +80,16 @@ eOperandType Lexer::get_operand_type(std::string const& operand) const
 
 std::string const *Lexer::get_operand_value(std::string const& operand) const
 {
-	static auto const r = std::regex(Lexer::value_regex_string);
+	auto const operand_regex = std::regex(Lexer::operand_regex);
 	std::smatch match;
 
-	std::regex_search(operand, match, r);
-	return (new std::string(match[0].str()));
+	std::regex_search(operand, match, operand_regex);
+	return (new std::string(match[1].str()));
 }
 
 void Lexer::validate_operand_syntax(std::string const& operand) const
 {
-	auto const operand_regex = std::regex("\\w+\\((" + Lexer::value_regex_string + ")\\)");
+	auto const operand_regex = std::regex(Lexer::operand_regex);
 
 	if (!std::regex_match(operand, operand_regex))
 		throw SyntaxErrorException(operand);
