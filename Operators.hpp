@@ -9,6 +9,14 @@ public:
 	virtual void execute(VM &vm, std::vector<IOperand const*> const& operands) const;
 };
 
+class Assert : public Operator
+{
+public:
+	Assert(void);
+	virtual void execute(VM &vm, std::vector<IOperand const*> const& operands) const;
+};
+
+
 class Add : public Operator
 {
 public:

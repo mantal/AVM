@@ -50,6 +50,7 @@ Operator const *Lexer::get_operator(std::string const& op) const
 	static const std::unordered_map<std::string, Operator *> operators = {
 		{ "push", new Push() },
 		{ "dump", new Dump() },
+		{ "assert", new Assert() },
 		{ "add", new Add() },
 		{ "sub", new Sub() },
 		{ "mul", new Mul() },

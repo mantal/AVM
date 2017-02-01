@@ -11,3 +11,7 @@ SyntaxErrorException::SyntaxErrorException(std::string const& op)
 
 OperandsMismatchException::OperandsMismatchException(std::string const& op, size_t expected, size_t found)
 		: std::runtime_error("Operator " + op + " expected " + std::to_string(expected) + " operands but " + std::to_string(found) + " were found") {}
+
+AssertionFailedException::AssertionFailedException(std::string const& expected, std::string const& found)
+		: std::runtime_error("Assertion failed: expected " + expected + " but found " + found) {}
+

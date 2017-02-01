@@ -26,3 +26,9 @@ class OperandsMismatchException : public std::runtime_error
 public:
 	OperandsMismatchException(std::string const&, size_t expected, size_t found);
 };
+
+class AssertionFailedException : public std::runtime_error
+{
+public:
+	AssertionFailedException(std::string const&, std::string const& found);
+};
