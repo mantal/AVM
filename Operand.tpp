@@ -27,21 +27,21 @@ template <class T> class Operand : public IOperand
 #pragma clang diagnostic ignored "-Wdouble-promotion"
 		virtual IOperand const *operator+(IOperand const& rhs) const
 		{
-			if (std::min(_type, rhs.getType()) != _type)
+			if (std::max(_type, rhs.getType()) != _type)
 				return rhs + *this;
 			return new Operand(_value + std::stod(rhs.toString()), _type);
 		}
 
 		virtual IOperand const *operator-(IOperand const& rhs) const
 		{
-			if (std::min(_type, rhs.getType()) != _type)
+			if (std::max(_type, rhs.getType()) != _type)
 				return rhs - *this;
 			return new Operand(_value - std::stod(rhs.toString()), _type);
 		}
 
 		virtual IOperand const *operator*(IOperand const& rhs) const
 		{
-			if (std::min(_type, rhs.getType()) != _type)
+			if (std::max(_type, rhs.getType()) != _type)
 				return rhs * *this;
 			return new Operand(_value * std::stod(rhs.toString()), _type);
 		}
@@ -53,7 +53,7 @@ template <class T> class Operand : public IOperand
 		{
 			if (_type >= eOperandType::Float || rhs.getType() >= eOperandType::Float)
 				throw std::domain_error("Modulus operator require integer operands");
-			if (std::min(_type, rhs.getType()) != _type)
+			if (std::max(_type, rhs.getType()) != _type)
 				return rhs % *this;
 			return new Operand(_value / std::stoll(rhs.toString()), _type);
 		}
