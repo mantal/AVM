@@ -2,8 +2,7 @@
 #include "Expression.hpp"
 #include "IOperand.hpp"
 #include "OperandFactory.hpp"
-#include "Push.hpp"
-#include "Add.hpp"
+#include "Operators.hpp"
 #include "Exceptions.hpp"
 #include "Parser.hpp"
 #include <boost/algorithm/string.hpp>
@@ -15,15 +14,20 @@ std::string const Lexer::value_regex_string = "(-?\\d+)([\\.\\,]\\d+)?";
 
 Expression *Lexer::lex(std::string const& line) const
 {
+	auto const trimmedLine = boost::trim_copy(line);
+
+	if (trimmedLine == "")
+		return new Expression(*get_operator("noop"), new std::vector<IOperand const*>());
+
 	Parser parser;
 	std::vector<std::string> strings;
-	boost::split(strings, line, boost::is_space());
+	boost::split(strings, trimmedLine, boost::is_space());
 
 	auto it = strings.begin();
 	
 	auto op = get_operator(*it);
 	auto operands_types = new std::vector<eOperandType>();
-	auto operands_values = new std::vector<std::string const *>();
+	auto operands_values = new std::vector<std::string const*>();
 
 	it++;
 
@@ -42,9 +46,11 @@ Expression *Lexer::lex(std::string const& line) const
 
 Operator const *Lexer::get_operator(std::string const& op) const
 {
+	//TODO utiliser le nom qui est dans l'op
 	static const std::unordered_map<std::string, Operator *> operators = {
 		{ "push", new Push() },
 		{ "add", new Add() },
+		{ "noop", new NoOp() },
 	};
 	
 	if (operators.count(op) == 0)
