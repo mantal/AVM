@@ -20,6 +20,8 @@ public:
 	std::deque<IOperand const*> stack;
 	std::vector<Expression const*> expressions;
 
+	bool exit;
+
 private:
 
 	VM(VM const&);
