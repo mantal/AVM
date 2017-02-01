@@ -13,7 +13,6 @@
 
 std::string const Lexer::value_regex_string = "(-?\\d+)([\\.\\,]\\d+)?";
 
-#include <iostream>
 Expression *Lexer::lex(std::string const& line) const
 {
 	Parser parser;

@@ -10,6 +10,7 @@ class VM
 {
 public:
 
+	VM(void);
 	VM(std::vector<Expression const*> const& expressions);
 
 	void run(void);
@@ -17,10 +18,9 @@ public:
 	~VM(void);
 
 	std::deque<IOperand const*> stack;
+	std::vector<Expression const*> expressions;
 
 private:
-		
-	std::vector<Expression const*> _expressions;
 
 	VM(VM const&);
 	VM& operator=(VM const&);

@@ -4,14 +4,31 @@
 #include "Lexer.hpp"
 #include "Push.hpp"
 #include <iostream>
+#include <fstream>
+#include <memory>
 
-int main(int argc, char **argv)
-{(void)argc;(void)argv;
+std::vector<Expression const*> *fromStdin(void)
+{
+	auto expressions = new std::vector<Expression const*>;
 	Lexer lexer;
 
-	auto const e = lexer.lex(argv[1]);
-	std::cout << e->op.name << std::endl;
-	std::cout << (e->operands)->at(0)->getType() << std::endl;
-	std::cout << (e->operands)->at(0)->toString() << std::endl;
+	for(std::string line; getline(std::cin, line);)
+	{
+		if (line == ";;")//TODO better?
+			break ;
+		expressions->push_back(lexer.lex(line));
+	}
+	return expressions;
+}
+
+int main(int argc, char **argv)
+{
+	VM vm;
+
+	if (argc == 1)
+	{
+		vm.expressions = *fromStdin();
+		vm.run();
+	}
 	return 0;
 }
