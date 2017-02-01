@@ -24,10 +24,6 @@ template <class T> class Operand : public IOperand
 		virtual eOperandType getType(void) const { return _type; }
 		virtual T getValue(void) const { return _value; }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wconversion"
-#pragma clang diagnostic ignored "-Wdouble-promotion"
-
 		virtual IOperand const *operator+(IOperand const& rhs) const
 		{
 			if (std::max(_type, rhs.getType()) != _type)
@@ -73,8 +69,6 @@ template <class T> class Operand : public IOperand
 				return rhs % *this;
 			return new Operand(static_cast<intmax_t>(_value) % static_cast<intmax_t>(std::stod(rhs.toString())), _type);
 		}
-
-#pragma clang diagnostic pop
 
 		virtual std::string const& toString(void) const
 		{

@@ -71,6 +71,7 @@ int main(int argc, char **argv)
 			continue ;
 		vm.expressions = *e;
 		vm.run();
+		vm.exit = false;
 	}
 	return 0;
 }
