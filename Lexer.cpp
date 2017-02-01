@@ -49,6 +49,7 @@ Operator const *Lexer::get_operator(std::string const& op) const
 	//TODO utiliser le nom qui est dans l'op
 	static const std::unordered_map<std::string, Operator *> operators = {
 		{ "push", new Push() },
+		{ "pop", new Pop() },
 		{ "dump", new Dump() },
 		{ "assert", new Assert() },
 		{ "add", new Add() },
@@ -56,6 +57,8 @@ Operator const *Lexer::get_operator(std::string const& op) const
 		{ "mul", new Mul() },
 		{ "div", new Div() },
 		{ "mod", new Mod() },
+		{ "print", new Print() },
+		{ "exit", new Exit() },
 		{ "noop", new NoOp() },
 	};
 	

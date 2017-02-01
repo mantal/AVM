@@ -2,6 +2,20 @@
 
 #include "Operator.hpp"
 
+class Push : public Operator
+{
+public:
+	Push(void);
+	virtual void execute(VM &vm, std::vector<IOperand const*> const &operands) const;
+};
+
+class Pop : public Operator
+{
+public:
+	Pop(void);
+	virtual void execute(VM &vm, std::vector<IOperand const*> const& operands) const;
+};
+
 class Dump : public Operator
 {
 public:
@@ -52,10 +66,17 @@ public:
 	virtual void execute(VM &vm, std::vector<IOperand const*> const& operands) const;
 };
 
-class Push : public Operator
+class Print : public Operator
 {
 public:
-	Push(void);
+	Print(void);
+	virtual void execute(VM &vm, std::vector<IOperand const*> const &operands) const;
+};
+
+class Exit : public Operator
+{
+public:
+	Exit(void);
 	virtual void execute(VM &vm, std::vector<IOperand const*> const &operands) const;
 };
 

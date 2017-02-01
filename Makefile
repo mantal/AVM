@@ -12,7 +12,7 @@
 
 NAME	= abstractVM
 SRC		= main.cpp OperandFactory.cpp Operator.cpp VM.cpp Expression.cpp Lexer.cpp Exceptions.cpp Parser.cpp \
-		  Push.cpp Add.cpp Sub.cpp Mul.cpp Div.cpp Mod.cpp NoOp.cpp Dump.cpp Assert.cpp
+		  Push.cpp Pop.cpp Dump.cpp Assert.cpp Add.cpp Sub.cpp Mul.cpp Div.cpp Mod.cpp NoOp.cpp Print.cpp Exit.cpp
 OBJ		= $(SRC:.cpp=.o)
 CFLAGS  = -std=c++1z -Wall -Wextra
 
