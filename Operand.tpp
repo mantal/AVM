@@ -2,6 +2,7 @@
 #include <string>
 #include <algorithm>
 #include <functional>
+#include <stdexcept>
 
 template <class T> class Operand : public IOperand
 {
@@ -46,14 +47,12 @@ template <class T> class Operand : public IOperand
 		}
 		virtual IOperand const *operator/(IOperand const& rhs) const
 		{
-			//if (std::min(_type, rhs.getType()) != _type)
-			//	return rhs / *this;
 			return new Operand(_value / std::stod(rhs.toString()), _type);
 		}
 		virtual IOperand const *operator%(IOperand const& rhs) const
 		{
 			if (_type >= eOperandType::Float || rhs.getType() >= eOperandType::Float)
-				throw new std::exception();//TODO FAIRE UN EXECPTION sPeCiALEe
+				throw std::domain_error("Modulus operator require integer operands");
 			if (std::min(_type, rhs.getType()) != _type)
 				return rhs % *this;
 			return new Operand(_value / std::stoll(rhs.toString()), _type);

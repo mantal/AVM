@@ -2,12 +2,12 @@
 #include "Expression.hpp"
 #include "Operator.hpp"
 #include "Lexer.hpp"
-#include "Push.hpp"
+#include "Exceptions.hpp"
 #include <iostream>
 #include <fstream>
 #include <memory>
 
-std::vector<Expression const*> *fromStdin(void)
+static std::vector<Expression const*> *fromStdin(void)
 {
 	auto expressions = new std::vector<Expression const*>;
 	Lexer lexer;
@@ -16,7 +16,15 @@ std::vector<Expression const*> *fromStdin(void)
 	{
 		if (line == ";;")//TODO better?
 			break ;
-		expressions->push_back(lexer.lex(line));
+
+		try
+		{
+			expressions->push_back(lexer.lex(line));
+		}
+		catch (std::exception const& e)
+		{
+			std::cerr << e.what() << std::endl;
+		}
 	}
 	return expressions;
 }

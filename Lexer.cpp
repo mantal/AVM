@@ -48,7 +48,7 @@ Operator const *Lexer::get_operator(std::string const& op) const
 	};
 	
 	if (operators.count(op) == 0)
-		throw new UnknowOperatorException(op);
+		throw UnknowOperatorException(op);
 	return operators.at(op);
 }
 
@@ -68,7 +68,7 @@ eOperandType Lexer::get_operand_type(std::string const& operand) const
 
 	auto const o = match[0].str();
 	if (operands.count(o) == 0)
-		throw new UnknowOperandException(o);
+		throw UnknowOperandException(o);
 	return operands.at(o);
 }
 
@@ -86,5 +86,5 @@ void Lexer::validate_operand_syntax(std::string const& operand) const
 	auto const operand_regex = std::regex("\\w+\\((" + Lexer::value_regex_string + ")\\)");
 
 	if (!std::regex_match(operand, operand_regex))
-		throw new SyntaxErrorException(operand);
+		throw SyntaxErrorException(operand);
 }
