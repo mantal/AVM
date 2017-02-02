@@ -12,6 +12,8 @@
 
 std::string const Lexer::operand_regex = "\\w+\\((-?\\d+([\\.\\,]\\d+)?)\\)";
 
+Lexer::Lexer(void) { }
+
 Expression *Lexer::lex(std::string const& line) const
 {
 	auto const trimmedLine = boost::trim_copy(line);

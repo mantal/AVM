@@ -5,7 +5,7 @@
 #include "VM.hpp"
 #include <vector>
 
-class Expression//TODO sotcker ligne + char pour les msg d'erreur
+class Expression
 {
 public:
 
@@ -15,6 +15,8 @@ public:
 
 	Operator const& op;
 	std::vector<IOperand const*> const *operands;
+
+	virtual ~Expression(void) { }
 
 private:
 

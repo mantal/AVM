@@ -10,7 +10,7 @@ public:
 	
 	virtual void execute(VM &vm, std::vector<IOperand const*> const &operands) const;
 
-	virtual ~Operator() { }
+	virtual ~Operator(void) { }
 
 	size_t getParamNumber(void);
 

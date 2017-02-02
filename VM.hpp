@@ -15,7 +15,7 @@ public:
 
 	void run(void);
 
-	~VM(void);
+	virtual ~VM(void);
 
 	std::deque<IOperand const*> stack;
 	std::vector<Expression const*> expressions;

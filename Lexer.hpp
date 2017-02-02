@@ -6,6 +6,9 @@ class Lexer
 {
 public:
 
+	Lexer(void);
+	virtual ~Lexer(void) { }
+
 	Expression *lex(std::string const&) const;
 
 	Operator const *get_operator(std::string const& op) const;
@@ -17,4 +20,7 @@ public:
 private:
 
 	static std::string const operand_regex;
+
+	Lexer(Lexer const&);
+	Lexer *operator=(Lexer const&);
 };
