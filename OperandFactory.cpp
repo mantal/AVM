@@ -6,29 +6,15 @@
 
 IOperand const *OperandFactory::createOperand(eOperandType type, std::string const& value) const
 {
-	switch (type)
+	IOperand const *(OperandFactory::*fs[])(std::string const&) const = 
 	{
-		case eOperandType::Int8:
-			return createInt8(value);
-		case eOperandType::Int16:
-			return createInt16(value);
-		case eOperandType::Int32:
-			return createInt32(value);
-		case eOperandType::Float:
-			return createFloat(value);
-		case eOperandType::Double:
-			return createDouble(value);
-	}
-	//TODO
-	//static const auto fs =
-	/*IOperand const *(OperandFactory::*fs[])(std::string const&) const =
-	{
+		&OperandFactory::createInt8,
 		&OperandFactory::createInt16,
 		&OperandFactory::createInt32,
+		&OperandFactory::createFloat,
+		&OperandFactory::createDouble,
 	};
-	auto f = &OperandFactory::createInt16;
-	(this).*(f)(value);*/
-	//return std::invoke(this, fs[static_cast<int>(type)], value);
+	return std::invoke(fs[static_cast<int>(type)], this, value);
 }
 
 IOperand const *OperandFactory::createInt8(std::string const& value) const
