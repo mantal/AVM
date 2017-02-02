@@ -17,9 +17,9 @@ Lexer::Lexer(void) { }
 Expression *Lexer::lex(std::string const& line) const
 {
 	static auto const noop = new Expression(*get_operator("noop"), new std::vector<IOperand const*>());
-	auto const trimmedLine = boost::trim_copy(line);
+	auto const trimmedLine = boost::trim_copy(line.substr(0, line.find(';')));
 
-	if (trimmedLine == "")
+	if (trimmedLine == "" || trimmedLine.at(0) == ';')
 		return noop;
 
 	Parser parser;
@@ -27,9 +27,6 @@ Expression *Lexer::lex(std::string const& line) const
 	boost::split(strings, trimmedLine, boost::is_space());
 
 	auto it = strings.begin();
-
-	if (it->at(0) == ';')
-		return noop;
 
 	auto op = get_operator(*it);
 	auto operands_types = new std::vector<eOperandType>();
@@ -39,9 +36,7 @@ Expression *Lexer::lex(std::string const& line) const
 
 	for (; it != strings.end(); it++)
 	{
-		if ((*it).size() == 0)
-			continue ;
-		if (it->at(0) == ';')
+		if (it->size() == 0)
 			continue ;
 		validate_operand_syntax(*it);
 		operands_types->push_back(get_operand_type(*it));
