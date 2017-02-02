@@ -16,17 +16,21 @@ Lexer::Lexer(void) { }
 
 Expression *Lexer::lex(std::string const& line) const
 {
+	static auto const noop = new Expression(*get_operator("noop"), new std::vector<IOperand const*>());
 	auto const trimmedLine = boost::trim_copy(line);
 
 	if (trimmedLine == "")
-		return new Expression(*get_operator("noop"), new std::vector<IOperand const*>());
+		return noop;
 
 	Parser parser;
 	std::vector<std::string> strings;
 	boost::split(strings, trimmedLine, boost::is_space());
 
 	auto it = strings.begin();
-	
+
+	if (it->at(0) == ';')
+		return noop;
+
 	auto op = get_operator(*it);
 	auto operands_types = new std::vector<eOperandType>();
 	auto operands_values = new std::vector<std::string const*>();
