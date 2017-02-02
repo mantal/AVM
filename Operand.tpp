@@ -40,7 +40,7 @@ template <class T> class Operand : public IOperand
 			if (std::max(_type, rhs.getType()) != _type)
 				return rhs - *this;
 			auto b = std::stod(rhs.toString());
-			if (_value - b <= std::numeric_limits<T>::min())
+			if (_value - b <= std::numeric_limits<T>::lowest())
 				throw std::underflow_error("Underflow detected: " + toString() + " - " + rhs.toString());
 
 			return new Operand(_value - std::stod(rhs.toString()), _type);
