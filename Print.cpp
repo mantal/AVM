@@ -10,7 +10,7 @@ void Print::execute(VM &vm, std::vector<IOperand const*> const& operands) const
 	Operator::execute(vm, operands);
 
 	auto &a = *vm.stack.front();
-	vm.stack.pop_front();
+	//vm.stack.pop_front();
 
 	if (a.getType() != eOperandType::Int8)
 		throw AssertionFailedException("an int8", "SOMEHTINGELSEFUCKC++");
