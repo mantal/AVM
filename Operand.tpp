@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <limits>
 #include <cstdint>
+#include <math.h>
 
 template <class T> class Operand : public IOperand
 {
@@ -49,6 +50,7 @@ template <class T> class Operand : public IOperand
 		{
 			if (std::max(_type, rhs.getType()) != _type)
 				return rhs * *this;
+
 			auto b = std::stod(rhs.toString());
 			if (_value * b >= std::numeric_limits<T>::max())
 				throw std::overflow_error("Overflow detected: " + toString() + " * " + rhs.toString());
@@ -58,6 +60,10 @@ template <class T> class Operand : public IOperand
 
 		virtual IOperand const *operator/(IOperand const& rhs) const
 		{
+			auto const b = std::stod(rhs.toString());
+			if (fabs(b) < std::numeric_limits<double>::epsilon())
+				throw std::domain_error("Divider operand can not be 0");
+
 			return new Operand(_value / std::stod(rhs.toString()), _type);
 		}
 
