@@ -39,10 +39,10 @@ Expression *Lexer::lex(std::string const& line) const
 
 	for (; it != strings.end(); it++)
 	{
-		if ((*it).size() == 0)
+		if (it->size() == 0)
 			continue ;
 		if (it->at(0) == ';')
-			continue ;
+			break ;
 		validate_operand_syntax(*it);
 		operands_types->push_back(get_operand_type(*it));
 		operands_values->push_back(get_operand_value(*it));
