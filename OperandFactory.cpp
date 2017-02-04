@@ -24,7 +24,7 @@ IOperand const *OperandFactory::createInt8(std::string const& value) const
 
 IOperand const *OperandFactory::createInt16(std::string const& value) const
 {
-	return new Operand<int16_t>(boost::numeric_cast<int8_t>(std::stoll(value)), eOperandType::Int16);
+	return new Operand<int16_t>(boost::numeric_cast<int16_t>(std::stoll(value)), eOperandType::Int16);
 }
 
 IOperand const *OperandFactory::createInt32(std::string const& value) const
