@@ -1,0 +1,36 @@
+;whitespaces
+push double(3.14)
+push double(3.14);
+push double(3.14) ;
+push double(3.14)	;
+ push double(3.14)
+	push double(3.14)
+ 	 push double(3.14)
+push  	double(3.14)
+push double(3.14)  
+push 	double(3.14)
+	 	 	 	push  	 		 double(3.14) 	 
+
+;empty lines
+
+	
+ 
+	;
+ ;
+
+;unknow operator/operands
+kjdhskjhfsd
+jakhfsd double(2)
+djdjd(2) double(1)
+!$$@#$
+push ljhjasda(2)
+
+;wrong value
+push double()
+push double(#)
+push double(ljkfjs)
+push double(.0)
+push double(0.)
+push double(;)
+
+
