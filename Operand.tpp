@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <limits>
 #include <cstdint>
-#include <math.h>
+#include <cmath>
 
 template <class T> class Operand : public IOperand
 {
@@ -73,7 +73,7 @@ template <class T> class Operand : public IOperand
 				throw std::domain_error("Modulus operator require integer operands");
 			if (std::max(_type, rhs.getType()) != _type)
 				return rhs % *this;
-			return new Operand(static_cast<intmax_t>(_value) % static_cast<intmax_t>(std::stod(rhs.toString())), _type);
+			return new Operand(std::fmod(static_cast<intmax_t>(_value), static_cast<intmax_t>(std::stod(rhs.toString()))), _type);
 		}
 
 		virtual std::string const& toString(void) const
