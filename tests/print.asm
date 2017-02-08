@@ -1,3 +1,5 @@
+push int8(10)
+push int8(33)
 push int8(100)
 push int8(108)
 push int8(114)
@@ -35,6 +37,9 @@ print
 pop
 print
 pop
+print
+pop
+print
+pop
 
-dump ; ca devrai afficher toutes les valeurs, elle ne sont pas pop
 exit
