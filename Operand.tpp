@@ -1,4 +1,5 @@
 #include "IOperand.hpp"
+#include "OperandFactory.hpp"
 #include <string>
 #include <algorithm>
 #include <functional>
@@ -12,7 +13,7 @@ template <class T> class Operand : public IOperand
 	public:
 
 		Operand(T value, eOperandType type)
-			:_value(value), _type(type), _str(std::to_string(value)) { }
+			:_value(value), _type(type), _str(std::to_string(value)), _factory() { }
 		Operand(Operand const& o) : Operand(o._value, o._type) { }
 
 		virtual ~Operand(void) {}
@@ -27,35 +28,20 @@ template <class T> class Operand : public IOperand
 
 		virtual IOperand const *operator+(IOperand const& rhs) const
 		{
-			if (std::max(_type, rhs.getType()) != _type)
-				return rhs + *this;
-			auto b = std::stod(rhs.toString());
-			if (_value + b >= std::numeric_limits<T>::max())
-				throw std::overflow_error("Overflow detected: " + toString() + " + " + rhs.toString());
-			return new Operand(_value + b, _type);
+			auto const b = std::stod(rhs.toString());
+			return _factory.createOperand(_type, _value + b);
 		}
 
 		virtual IOperand const *operator-(IOperand const& rhs) const
 		{
-			if (std::max(_type, rhs.getType()) != _type)
-				return rhs - *this;
-			auto b = std::stod(rhs.toString());
-			if (_value - b <= std::numeric_limits<T>::lowest())
-				throw std::underflow_error("Underflow detected: " + toString() + " - " + rhs.toString());
-
-			return new Operand(_value - std::stod(rhs.toString()), _type);
+			auto const b = std::stod(rhs.toString());
+			return _factory.createOperand(rhs.getType() > getType() ? rhs.getType() : getType(), _value - b);
 		}
 
 		virtual IOperand const *operator*(IOperand const& rhs) const
 		{
-			if (std::max(_type, rhs.getType()) != _type)
-				return rhs * *this;
-
-			auto b = std::stod(rhs.toString());
-			if (_value * b >= std::numeric_limits<T>::max())
-				throw std::overflow_error("Overflow detected: " + toString() + " * " + rhs.toString());
-
-			return new Operand(_value * std::stod(rhs.toString()), _type);
+			auto const b = std::stod(rhs.toString());
+			return _factory.createOperand(_type, _value * b);
 		}
 
 		virtual IOperand const *operator/(IOperand const& rhs) const
@@ -64,16 +50,14 @@ template <class T> class Operand : public IOperand
 			if (fabs(b) < std::numeric_limits<double>::epsilon())
 				throw std::domain_error("Divider operand can not be 0");
 
-			return new Operand(_value / std::stod(rhs.toString()), _type);
+			return _factory.createOperand(rhs.getType() > getType() ? rhs.getType() : getType(), _value / b);
 		}
 
 		virtual IOperand const *operator%(IOperand const& rhs) const
 		{
 			if (_type >= eOperandType::Float || rhs.getType() >= eOperandType::Float)
 				throw std::domain_error("Modulus operator require integer operands");
-			if (std::max(_type, rhs.getType()) != _type)
-				return rhs % *this;
-			return new Operand(std::fmod(static_cast<intmax_t>(_value), static_cast<intmax_t>(std::stod(rhs.toString()))), _type);
+			return _factory.createOperand(rhs.getType() > getType() ? rhs.getType() : getType(), std::fmod(static_cast<intmax_t>(_value), static_cast<intmax_t>(std::stod(rhs.toString()))));
 		}
 
 		virtual std::string const& toString(void) const
@@ -85,6 +69,7 @@ template <class T> class Operand : public IOperand
 		const T				_value;
 		const eOperandType	_type;
 		const std::string	_str;
+		const OperandFactory _factory;
 
 		Operand(void);
 		Operand(IOperand& o);
