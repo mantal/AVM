@@ -2,10 +2,18 @@
 
 #include "IOperand.hpp"
 
+#include <string>
+
 class OperandFactory
 {
 public:
 	IOperand const *createOperand(eOperandType type, std::string const& value) const;
+	
+	template<typename T>
+	IOperand const *createOperand(eOperandType type, T value) const
+	{
+		return createOperand(type, std::to_string(value));
+	}
 
 private:
 	IOperand const *createInt8(std::string const& value) const;
