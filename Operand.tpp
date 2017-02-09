@@ -29,7 +29,7 @@ template <class T> class Operand : public IOperand
 		virtual IOperand const *operator+(IOperand const& rhs) const
 		{
 			auto const b = std::stod(rhs.toString());
-			return _factory.createOperand(_type, _value + b);
+			return _factory.createOperand(rhs.getType() > getType() ? rhs.getType() : getType(), _value + b);
 		}
 
 		virtual IOperand const *operator-(IOperand const& rhs) const
@@ -41,7 +41,7 @@ template <class T> class Operand : public IOperand
 		virtual IOperand const *operator*(IOperand const& rhs) const
 		{
 			auto const b = std::stod(rhs.toString());
-			return _factory.createOperand(_type, _value * b);
+			return _factory.createOperand(rhs.getType() > getType() ? rhs.getType() : getType(), _value * b);
 		}
 
 		virtual IOperand const *operator/(IOperand const& rhs) const
