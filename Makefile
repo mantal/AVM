@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                    +:+ +:+         +:+       #
-#    By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+         #
+#    By: mde-jesu <mde-jesu@student.42.fr>          +#+  +:+       +#+         #
 #                                                +#+#+#+#+#+   +#+             #
-#    Created: 2013/11/29 09:40:24 by dlancar           #+#    #+#              #
-#    Updated: 2016/11/30 18:44:11 by dlancar          ###   ########.fr        #
+#    Created: 2013/11/29 09:40:24 by mde-jesu          #+#    #+#              #
+#    Updated: 2017/02/09 17:55:24 by mde-jesu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,8 @@ SRC		= main.cpp OperandFactory.cpp Operator.cpp VM.cpp Expression.cpp Lexer.cpp 
 OBJ		= $(SRC:.cpp=.o)
 CFLAGS  = -std=c++1z -Wall -Wextra
 
+BOOSTDIR= boost
+
 debug: CFLAGS += -O0 -g3 -fsanitize=address
 release: CFLAGS += -O3 -march=native
 
@@ -24,7 +26,10 @@ all: debug
 debug: $(NAME)
 release: $(NAME)
 
-$(NAME): $(OBJ)
+$(BOOSTDIR):
+	sh install.sh
+
+$(NAME): $(BOOSTDIR) $(OBJ)
 	@$(CXX) -o $(NAME) $(CFLAGS) $(LBFLAG) $(OBJ)
 
 %.o: %.cpp
